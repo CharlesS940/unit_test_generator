@@ -6,7 +6,7 @@ import React, { useState } from "react";
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
 export default function CodeInput() {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("Paste your code here...");
   const [testOutput, setTestOutput] = useState("");
 
   return (
@@ -27,7 +27,7 @@ export default function CodeInput() {
       </h1>
       <div style={{ display: "flex", gap: 32, width: "100%" }}>
         <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <label style={{ fontWeight: "bold", marginBottom: 8 }}>Paste your code:</label>
+          <label style={{ fontWeight: "bold", marginBottom: 8 }}>Code to test:</label>
           <MonacoEditor
             height="750px"
             defaultLanguage="python"
