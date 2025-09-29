@@ -70,54 +70,56 @@ export default function CodeInput() {
       <h1 style={{ fontSize: 40, fontWeight: "bold", marginBottom: 32, textAlign: "center" }}>
         Unit Test Generator
       </h1>
-      
-      <div style={{ marginBottom: 24, textAlign: "center" }}>
-        <label style={{ fontWeight: "bold", marginRight: 12, fontSize: 16 }}>
-          Select Language:
-        </label>
-        <select
-          value={selectedLanguage}
-          onChange={(e) => setSelectedLanguage(e.target.value as SupportedLanguage)}
-          style={{
-            padding: "8px 12px",
-            fontSize: 16,
-            borderRadius: 6,
-            border: "lightgray solid 1px",
-            backgroundColor: "white",
-            cursor: "pointer",
-            minWidth: 150
-          }}
-        >
-          {LANGUAGE_CONFIGS.map((config) => (
-            <option key={config.value} value={config.value}>
-              {config.label}
-            </option>
-          ))}
-        </select>
-        <label style={{ fontWeight: "bold", marginRight: 12, fontSize: 16 }}>
-          Select Framework:
-        </label>
-        <select
-          value={selectedFramework}
-          onChange={(e) => setSelectedFramework(e.target.value as SupportedFramework)}
-          style={{
-            padding: "8px 12px",
-            fontSize: 16,
-            borderRadius: 6,
-            border: "lightgray solid 1px",
-            backgroundColor: "white",
-            cursor: "pointer",
-            minWidth: 150
-          }}
-        >
-          {availableFrameworks.map(framework => (
-            <option key={framework} value={framework}>
-              {framework}
-            </option>
-          ))}
-        </select>
+      <div style={{ display: "flex", gap: 32, flexDirection: "row" }}>
+        <div style={{ marginBottom: 24, textAlign: "center" }}>
+          <label style={{ fontWeight: "bold", marginRight: 12, fontSize: 16 }}>
+            Select Language:
+          </label>
+          <select
+            value={selectedLanguage}
+            onChange={(e) => setSelectedLanguage(e.target.value as SupportedLanguage)}
+            style={{
+              padding: "8px 12px",
+              fontSize: 16,
+              borderRadius: 6,
+              border: "lightgray solid 1px",
+              backgroundColor: "white",
+              cursor: "pointer",
+              minWidth: 150
+            }}
+          >
+            {LANGUAGE_CONFIGS.map((config) => (
+              <option key={config.value} value={config.value}>
+                {config.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label style={{ fontWeight: "bold", marginRight: 12, fontSize: 16 }}>
+            Select Framework:
+          </label>
+          <select
+            value={selectedFramework}
+            onChange={(e) => setSelectedFramework(e.target.value as SupportedFramework)}
+            style={{
+              padding: "8px 12px",
+              fontSize: 16,
+              borderRadius: 6,
+              border: "lightgray solid 1px",
+              backgroundColor: "white",
+              cursor: "pointer",
+              minWidth: 150
+            }}
+          >
+            {availableFrameworks.map(framework => (
+              <option key={framework} value={framework}>
+                {framework}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-
       <div style={{ display: "flex", gap: 32, width: "100%" }}>
         <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <label style={{ fontWeight: "bold", marginBottom: 8 }}>Code to test:</label>
