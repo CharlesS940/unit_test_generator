@@ -1,20 +1,19 @@
-// Supported programming languages for unit test generation
 export type SupportedLanguage = 'python' | 'javascript' | 'typescript' | 'java' | 'go' | 'rust' | 'csharp';
 
-// API Request type
+export type SupportedFramework = 'pytest' | 'unittest' | 'Jest' | 'Mocha' | 'JUnit' | 'TestNG' | 'testing' | 'cargo test' | 'NUnit' | 'xUnit';
+
 export interface GenerateTestsRequest {
   code: string;
   language: SupportedLanguage;
+  framework: SupportedFramework;
 }
 
-// Language configuration for Monaco Editor and display
 export interface LanguageConfig {
   value: SupportedLanguage;
   label: string;
-  testFramework: string[];
+  testFramework: SupportedFramework[];
 }
 
-// Available languages with their configurations
 export const LANGUAGE_CONFIGS: LanguageConfig[] = [
   {
     value: 'python',
