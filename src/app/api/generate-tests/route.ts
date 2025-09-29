@@ -1,16 +1,12 @@
-// API route for generating unit tests using Mistral
-
 import { generateTests } from '@/lib/mistral-client';
+import type { GenerateTestsRequest } from '@/types';
 
 export async function POST(request: Request) {
   try {
-    // Get the code from the request
-    const { code, language } = await request.json();
+    const { code, language, framework }: GenerateTestsRequest = await request.json();
 
-    // Call our Mistral client
-    const tests = await generateTests(code, language || 'python');
+    const tests = await generateTests(code, language || 'python', framework || 'pytest');
 
-    // Return the generated tests
     return Response.json({ tests });
     
   } catch (error) {
