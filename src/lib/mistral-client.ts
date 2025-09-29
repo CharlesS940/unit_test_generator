@@ -5,7 +5,12 @@ const apiKey = process.env.MISTRAL_API_KEY;
 const client = new Mistral({apiKey: apiKey});
 
 export async function generateTests(code: string, language: string, framework: string): Promise<string> {
-  const prompt = `Generate unit tests for the following ${language} code using the ${framework} testing framework:\n\n${code}\n\nUnit tests:`;
+  const prompt = `Generate unit tests for the following ${language} code using the ${framework} testing framework. Return only the generated code in your answer,
+  do not use any markdown formatting or code blocks.
+  
+  Code: ${code}
+  
+  Unit tests:`;
   
   const response = await client.chat.complete({
     model: 'mistral-small-latest',
