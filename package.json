@@ -11,7 +11,9 @@
   "dependencies": {
     "@mistralai/mistralai": "^1.10.0",
     "@monaco-editor/react": "^4.7.0",
+    "@octokit/rest": "^22.0.0",
     "next": "15.5.4",
+    "next-auth": "^4.24.11",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
