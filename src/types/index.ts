@@ -44,6 +44,7 @@ export interface GitHubFile {
   additions: number;
   deletions: number;
   patch?: string;
+  fileContent?: string;
 }
 
 export interface PRAnalysis {
