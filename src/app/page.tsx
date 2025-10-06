@@ -1,57 +1,25 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import React, { useState } from "react";
-import { SupportedLanguage, SupportedFramework, LANGUAGE_CONFIGS, GenerateTestsRequest } from "@/types";
+import ManualCodeTab from "@/components/ManualCodeTab";
+import PRAnalysisTab from "@/components/PRAnalysisTab";
 
-const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
-
-export default function CodeInput() {
-  const [code, setCode] = useState("Paste your code here...");
+export default function Home() {
+  const [activeTab, setActiveTab] = useState<'manual' | 'pr'>('manual');
   const [testOutput, setTestOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>('python');
-  const [selectedFramework, setSelectedFramework] = useState<SupportedFramework>('pytest');
 
-  // Extract available frameworks for the selected language
-  const availableFrameworks = LANGUAGE_CONFIGS.find(config => config.value === selectedLanguage)?.testFramework || [];
+  const handleTestsGenerated = (tests: string) => {
+    setTestOutput(tests);
+  };
 
-  const generateTests = async () => {
-    if (!code || code.trim() === "" || code === "Paste your code here...") {
-      setError("Please enter some code first!");
-      return;
-    }
+  const handleLoadingChange = (loading: boolean) => {
+    setIsLoading(loading);
+  };
 
-    setIsLoading(true);
-    setError("");
-
-    try {
-      const requestBody: GenerateTestsRequest = {
-        code: code,
-        language: selectedLanguage,
-        framework: selectedFramework
-      };
-
-      const response = await fetch('/api/generate-tests', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || 'Failed to generate tests');
-      } else {
-        setTestOutput(data.tests);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
-    } finally {
-      setIsLoading(false);
-    }
-  
+  const handleError = (errorMessage: string) => {
+    setError(errorMessage);
   };
 
   return (
@@ -70,110 +38,59 @@ export default function CodeInput() {
       <h1 style={{ fontSize: 40, fontWeight: "bold", marginBottom: 32, textAlign: "center" }}>
         Unit Test Generator
       </h1>
-      <div style={{ display: "flex", gap: 32, flexDirection: "row" }}>
-        <div style={{ marginBottom: 24, textAlign: "center" }}>
-          <label style={{ fontWeight: "bold", marginRight: 12, fontSize: 16 }}>
-            Select Language:
-          </label>
-          <select
-            value={selectedLanguage}
-            onChange={(e) => setSelectedLanguage(e.target.value as SupportedLanguage)}
-            style={{
-              padding: "8px 12px",
-              fontSize: 16,
-              borderRadius: 6,
-              border: "lightgray solid 1px",
-              backgroundColor: "white",
-              cursor: "pointer",
-              minWidth: 150
-            }}
-          >
-            {LANGUAGE_CONFIGS.map((config) => (
-              <option key={config.value} value={config.value}>
-                {config.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label style={{ fontWeight: "bold", marginRight: 12, fontSize: 16 }}>
-            Select Framework:
-          </label>
-          <select
-            value={selectedFramework}
-            onChange={(e) => setSelectedFramework(e.target.value as SupportedFramework)}
-            style={{
-              padding: "8px 12px",
-              fontSize: 16,
-              borderRadius: 6,
-              border: "lightgray solid 1px",
-              backgroundColor: "white",
-              cursor: "pointer",
-              minWidth: 150
-            }}
-          >
-            {availableFrameworks.map(framework => (
-              <option key={framework} value={framework}>
-                {framework}
-              </option>
-            ))}
-          </select>
-        </div>
+      
+      <div style={{ marginBottom: 24, display: 'flex', gap: 8 }}>
+        <button
+          onClick={() => setActiveTab('manual')}
+          style={{
+            padding: "12px 24px",
+            fontSize: 16,
+            fontWeight: "bold",
+            backgroundColor: activeTab === 'manual' ? "#007acc" : "#f0f0f0",
+            color: activeTab === 'manual' ? "white" : "#333",
+            border: "none",
+            borderRadius: 8,
+            cursor: "pointer"
+          }}
+        >
+          Manual Code Input
+        </button>
+        <button
+          onClick={() => setActiveTab('pr')}
+          style={{
+            padding: "12px 24px",
+            fontSize: 16,
+            fontWeight: "bold",
+            backgroundColor: activeTab === 'pr' ? "#007acc" : "#f0f0f0",
+            color: activeTab === 'pr' ? "white" : "#333",
+            border: "none",
+            borderRadius: 8,
+            cursor: "pointer"
+          }}
+        >
+          GitHub PR Analysis
+        </button>
       </div>
-      <div style={{ display: "flex", gap: 32, width: "100%" }}>
-        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <label style={{ fontWeight: "bold", marginBottom: 8 }}>Code to test:</label>
-          <MonacoEditor
-            height="750px"
-            language={selectedLanguage}
-            value={code}
-            onChange={(value) => setCode(value || "")}
-            options={{ fontSize: 16 }}
-          />
-        </div>
-        
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 16 }}>
-          <button
-            onClick={generateTests}
-            disabled={isLoading}
-            style={{
-              padding: "12px 24px",
-              fontSize: 16,
-              fontWeight: "bold",
-              backgroundColor: isLoading ? "#ccc" : "#007acc",
-              color: "white",
-              border: "none",
-              borderRadius: 8,
-              cursor: isLoading ? "not-allowed" : "pointer",
-              minWidth: 120
-            }}
-          >
-            {isLoading ? "Generating..." : "Generate Tests"}
-          </button>
-          
-          {error && (
-            <div style={{ 
-              color: "#ff4444", 
-              fontSize: 14, 
-              textAlign: "center",
-              maxWidth: 200,
-              wordWrap: "break-word"
-            }}>
-              {error}
-            </div>
-          )}
-        </div>
 
-        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <label style={{ fontWeight: "bold", marginBottom: 8 }}>Generated tests:</label>
-          <MonacoEditor
-            height="750px"
-            language={selectedLanguage}
-            value={testOutput}
-            options={{ readOnly: true, fontSize: 16, minimap: { enabled: false } }}
-          />
-        </div>
-      </div>
+      {activeTab === 'manual' ? (
+        <ManualCodeTab
+          testOutput={testOutput}
+          isLoading={isLoading}
+          error={error}
+          onTestsGenerated={handleTestsGenerated}
+          onLoadingChange={handleLoadingChange}
+          onError={handleError}
+        />
+      ) : (
+        <PRAnalysisTab
+          testOutput={testOutput}
+          isLoading={isLoading}
+          error={error}
+          onTestsGenerated={handleTestsGenerated}
+          onLoadingChange={handleLoadingChange}
+          onError={handleError}
+        />
+      )}
     </div>
   );
 }
