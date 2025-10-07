@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Unit Test Generator
+
+An intelligent unit test generation tool that automatically creates comprehensive test cases for your code using AI. Whether you're working with manual code input or analyzing GitHub pull requests, this tool streamlines the testing process across multiple programming languages and frameworks.
+
+## Features
+
+### Manual Code Testing
+- **Multi-language Support**: Generate tests for Python, JavaScript, TypeScript, Java, and C# and Rust
+- **Framework Flexibility**: Choose from popular testing frameworks for each language like pytest, Jest, JUnit, and more
+- **Interactive Code Editor**: Built-in Monaco editor with syntax highlighting to help with manual code input
+
+### GitHub PR Analysis
+- **Automated PR Scanning**: Analyze entire GitHub pull requests to understand code changes
+- **Context-Aware Testing**: Generate tests that cover the specific changes made in the PR
+
+The application currently relies on the Mistral developper API key for test generation. It can be obtained and used for free with limited rates. I plan to deploy this application using Vercel soon which would allow users to generate tests without using their own API key.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
 
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd unit_test_generator
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Set up environment variables:
+Create a `.env.local` file with your API keys:
+```
+MISTRAL_API_KEY=your_mistral_api_key
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Manual Code Testing
+1. Navigate to the "Manual Code" tab
+2. Select your programming language and testing framework
+3. Paste or write your code in the editor
+4. Click "Generate Tests" to create comprehensive unit tests
+5. Copy the generated tests to your project
 
-## Learn More
+### GitHub PR Analysis
+1. Switch to the "PR Analysis" tab
+3. Enter the URL of the GitHub pull request you want to analyze
+4. Click "Analyze PR & Generate Tests"
+5. Review the generated tests for the changes in the PR
 
-To learn more about Next.js, take a look at the following resources:
+## Future Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Future features
+- **Testing Framework Detection**: Detect which testing framework the repository currently uses and apply it to the generated tests. I currently rely on a default framework selection
+- **Direct PR Comments**: Automatically post generated unit tests as comments directly on GitHub pull requests
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
