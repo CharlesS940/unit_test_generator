@@ -5,13 +5,14 @@ An intelligent unit test generation tool that automatically creates comprehensiv
 ## Features
 
 ### Manual Code Testing
-- **Multi-language Support**: Generate tests for Python, JavaScript, TypeScript, Java, and C# and Rust
+- **Multi-language Support**: Generate tests for Python, JavaScript, TypeScript, Java, C#, Go, and Rust
 - **Framework Flexibility**: Choose from popular testing frameworks for each language like pytest, Jest, JUnit, and more
 - **Interactive Code Editor**: Built-in Monaco editor with syntax highlighting to help with manual code input
 
 ### GitHub PR Analysis
 - **Automated PR Scanning**: Analyze entire GitHub pull requests to understand code changes
-- **Context-Aware Testing**: Generate tests that cover the specific changes made in the PR
+- **Context-Aware Testing**: Generate tests based on both full file content and specific changes
+- **File-by-File Processing**: Sequential analysis of each modified file for comprehensive coverage
 
 The application currently relies on the Mistral developper API key for test generation. It can be obtained and used for free with limited rates. I plan to deploy this application using Vercel soon which would allow users to generate tests without using their own API key.
 
@@ -23,13 +24,13 @@ The application currently relies on the Mistral developper API key for test gene
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
 ```bash
-git clone <repository-url>
+git clone https://github.com/CharlesS940/unit_test_generator.git
 cd unit_test_generator
 ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 ```bash
 npm install
 # or
@@ -38,13 +39,14 @@ yarn install
 pnpm install
 ```
 
-3. Set up environment variables:
-Create a `.env.local` file with your API keys:
+3. **Set up environment variables:**
+Create a `.env.local` file in the root directory:
+```env
+MISTRAL_API_KEY=your_mistral_api_key_here
 ```
-MISTRAL_API_KEY=your_mistral_api_key
-```
+> Get your free Mistral API key at [console.mistral.ai](https://console.mistral.ai)
 
-4. Run the development server:
+4. **Run the development server:**
 ```bash
 npm run dev
 # or
@@ -53,7 +55,8 @@ yarn dev
 pnpm dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. **Open your browser:**
+Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## Usage
 
@@ -75,5 +78,6 @@ pnpm dev
 ### Future features
 - **Testing Framework Detection**: Detect which testing framework the repository currently uses and apply it to the generated tests. I currently rely on a default framework selection
 - **Direct PR Comments**: Automatically post generated unit tests as comments directly on GitHub pull requests
+- **Streaming Outputs**: Continuously display tokens as they are generated to improve user experience
 
 
