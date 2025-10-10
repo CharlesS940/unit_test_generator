@@ -1,6 +1,6 @@
 import { POST } from './route'
 import { generateTestsFromCode } from '@/lib/mistral-client'
-import type { GenerateTestsRequest } from '@/types'
+import type { GenerateTestsRequest, SupportedFramework, SupportedLanguage } from '@/types'
 
 jest.mock('@/lib/mistral-client', () => ({
   generateTestsFromCode: jest.fn()
@@ -94,8 +94,8 @@ describe('POST /api/generate-tests-from-code', () => {
         
         const requestBody: GenerateTestsRequest = {
           code: 'sample code',
-          language: testCase.language as any,
-          framework: testCase.framework as any
+          language: testCase.language as SupportedLanguage,
+          framework: testCase.framework as SupportedFramework
         }
 
         const request = new Request('http://localhost:3000/api/generate-tests-from-code', {

@@ -1,6 +1,6 @@
 import { analyzePR } from '../../../lib/github-client';
 import { generateTestsFromPR } from '../../../lib/mistral-client';
-import type { SupportedLanguage, SupportedFramework } from '../../../types';
+import type { SupportedLanguage, SupportedFramework, GitHubFile } from '../../../types';
 
 function getDefaultFramework(language: SupportedLanguage): SupportedFramework {
   const frameworkMap: Record<SupportedLanguage, SupportedFramework> = {
@@ -48,11 +48,11 @@ export async function POST(request: Request) {
         framework: selectedFramework,
         prNumber: analysis.pr.number,
         author: analysis.pr.user.login,
-        additions: analysis.files.reduce((sum: number, file: any) => sum + file.additions, 0),
-        deletions: analysis.files.reduce((sum: number, file: any) => sum + file.deletions, 0)
+        additions: analysis.files.reduce((sum: number, file: GitHubFile) => sum + file.additions, 0),
+        deletions: analysis.files.reduce((sum: number, file: GitHubFile) => sum + file.deletions, 0)
       },
       analysis: {
-        files: analysis.files.map((file: any) => ({
+        files: analysis.files.map((file: GitHubFile) => ({
           filename: file.filename,
           status: file.status,
           additions: file.additions,

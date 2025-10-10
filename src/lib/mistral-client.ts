@@ -67,8 +67,9 @@ export async function generateTestsFromPR(PRAnalysis: PRAnalysis, language: Supp
 
       output += '\n\n' + content;
       
-    } catch (error: any) {
-      if (error.statusCode === 429) {
+    } catch (error: unknown) {
+      const errorWithStatus = error as Error & { statusCode?: number };
+      if (errorWithStatus.statusCode === 429) {
         console.warn(`Rate limited on file ${file.filename}, skipping...`);
         output += `\n\n// Rate limited - could not generate tests for ${file.filename}`;
         continue;
